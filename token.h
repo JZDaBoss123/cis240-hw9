@@ -18,7 +18,7 @@ typedef struct {
          BROKEN_TOKEN } type;
   int literal_value;    // this field used to store the value of literal tokens
   int arg_no;           // this field used to store the index of argument literals argN
-  char str[MAX_TOKEN_LENGTH]; 
+  char str[MAX_TOKEN_LENGTH];  //store string for ident
 } token;
 
 // line_number : You can use this to keep track of the current line number which can be useful in reporting syntax errors.

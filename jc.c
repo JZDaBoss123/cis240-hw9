@@ -42,8 +42,8 @@ int main(int argc, char **argv)
                 free(writename);
                 free(line);
             }
-            printf(tokenString);
-            printf("\n");
+            // printf(tokenString);
+            // printf("\n");
             tokenString = strtok(NULL, "\n\t\f\v\r ");
         }
     }

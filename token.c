@@ -8,7 +8,8 @@ int read_token(token *theToken, char *tokenString)
 {
     //check for ident in the end since it can be arbitrary characters.
     int i;
-    if (tokenString == NULL) {
+    if (tokenString == NULL)
+    {
         printf("null string");
         return 1;
     }
@@ -164,7 +165,8 @@ int read_token(token *theToken, char *tokenString)
                 theToken->type = ARG;
                 char number[2] = {tokenString[3], tokenString[4]};
                 int argNumber = strtol(number, NULL, 10);
-                if (argNumber > 20) {
+                if (argNumber > 20)
+                {
                     printf("argnumber greater than 20");
                     return 1;
                 }
@@ -176,24 +178,59 @@ int read_token(token *theToken, char *tokenString)
 
     //literal
     //segfault here
-    else if (isdigit(tokenString[0]) || tokenString[0] == '-') {
+    else if (isdigit(tokenString[0]) || tokenString[0] == '-')
+    {
         int decimalNumber;
-        if (sscanf(tokenString, "%d", &decimalNumber) == 1) {
+        if (sscanf(tokenString, "%d", &decimalNumber) == 1)
+        {
             theToken->type = LITERAL;
             theToken->literal_value = decimalNumber;
-        } else {
+            return 0;
+        }
+        else
+        {
             printf("invalid number");
             return 1;
         }
     }
     //hex
-    else if (tokenString[0] == '0' && tokenString[1] == 'x') {
-
+    else if (tokenString[0] == '0' && tokenString[1] == 'x')
+    {
+        int hexNumber;
+        char *hexDigits = malloc(sizeof(char) * strlen(tokenString));
+        strncpy(hexDigits, tokenString + 2, strlen(tokenString) - 1);
+        if (sscanf(tokenString, "%X", &hexNumber) == 1)
+        {
+            theToken->type = LITERAL;
+            theToken->literal_value = hexNumber;
+            free(hexDigits);
+            return 0;
+        }
+        else
+        {
+            printf("invalid number");
+            free(hexDigits);
+            return 1;
+        }
     }
     //ident or broken
-    else {
-
-    }
+    // else
+    // {
+    //     if (!isalpha(tokenString[0]))
+    //     {
+    //         printf("does not start with alphabetical char, not a valid ident");
+    //         return 1;
+    //     }
+    //     for (i = 1; i < strlen(tokenString); i++)
+    //     {
+    //         if (!isalnum(tokenString[i]) || !(tokenString[i] == '_'))
+    //         {
+    //             printf("ident has invalid character");
+    //             return 1;
+    //         }
+    //     }
+    //     theToken->type = IDENT;
+    // }
 }
 
 //R5 and R6 are the top two elements of the stack, overwrite R5.
