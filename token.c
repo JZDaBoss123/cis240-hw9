@@ -214,23 +214,27 @@ int read_token(token *theToken, char *tokenString)
         }
     }
     //ident or broken
-    // else
-    // {
-    //     if (!isalpha(tokenString[0]))
-    //     {
-    //         printf("does not start with alphabetical char, not a valid ident");
-    //         return 1;
-    //     }
-    //     for (i = 1; i < strlen(tokenString); i++)
-    //     {
-    //         if (!isalnum(tokenString[i]) || !(tokenString[i] == '_'))
-    //         {
-    //             printf("ident has invalid character");
-    //             return 1;
-    //         }
-    //     }
-    //     theToken->type = IDENT;
-    // }
+    else
+    {
+        if (!isalpha(tokenString[0]))
+        {
+            printf("does not start with alphabetical char, not a valid ident");
+            return 1;
+        }
+        for (i = 1; i < strlen(tokenString); i++)
+        {
+            if (tokenString[i] == '_') {
+                continue;
+            }
+            
+            if (!isalnum(tokenString[i]))
+            {
+                printf("ident has invalid character");
+                return 1;
+            }
+        }
+        theToken->type = IDENT;
+    }
 }
 
 //R5 and R6 are the top two elements of the stack, overwrite R5.
