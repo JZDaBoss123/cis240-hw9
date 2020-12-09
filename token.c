@@ -226,7 +226,7 @@ int read_token(token *theToken, char *tokenString)
             if (tokenString[i] == '_') {
                 continue;
             }
-            
+
             if (!isalnum(tokenString[i]))
             {
                 printf("ident has invalid character");
@@ -234,7 +234,9 @@ int read_token(token *theToken, char *tokenString)
             }
         }
         theToken->type = IDENT;
+        return 0;
     }
+    return 1; //dummy return
 }
 
 //R5 and R6 are the top two elements of the stack, overwrite R5.
