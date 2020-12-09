@@ -23,21 +23,22 @@ int main(int argc, char **argv)
     readFile = fopen(filename, "r");
     writeFile = fopen(writename, "w");
     char *line = malloc(250 * sizeof(char)); //just read one token if needed
-    char *token;
+    char *tokenString;
+    token theToken;
 
     while (fgets(line, 250, readFile) != NULL)
     {
-        token = strtok(line, "\n\t\f\v\r ");
-        while (token != NULL)
+        tokenString = strtok(line, "\n\t\f\v\r ");
+        while (tokenString != NULL)
         {
-            if (token[0] == ';')
+            if (tokenString[0] == ';')
             {
                 break;
             }
-
-            printf(token);
-            printf("\n");
-            token = strtok(NULL, "\n\t\f\v\r ");
+            read_token(&theToken, tokenString);
+            // printf(tokenString);
+            // printf("\n");
+            tokenString = strtok(NULL, "\n\t\f\v\r ");
         }
     }
 

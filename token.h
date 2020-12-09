@@ -24,7 +24,7 @@ typedef struct {
 // line_number : You can use this to keep track of the current line number which can be useful in reporting syntax errors.
 extern int line_number;
 
-int read_token (token *theToken, FILE *theFile);
+int read_token (token *theToken, char *tokenString);
 
 // Extra functions which you may wish to define and use , or not
 const char *token_type_to_string (int type);
