@@ -10,6 +10,7 @@ int read_token(token *theToken, char *tokenString)
     int i;
     if (tokenString == NULL)
     {
+        theToken->type = BROKEN_TOKEN;
         printf("null string");
         return 1;
     }
@@ -168,6 +169,7 @@ int read_token(token *theToken, char *tokenString)
                 if (argNumber > 20)
                 {
                     printf("argnumber greater than 20");
+                    theToken->type = BROKEN_TOKEN;
                     return 1;
                 }
                 theToken->arg_no = argNumber;
@@ -190,6 +192,7 @@ int read_token(token *theToken, char *tokenString)
         else
         {
             printf("invalid number");
+            theToken->type = BROKEN_TOKEN;
             return 1;
         }
     }
@@ -210,6 +213,7 @@ int read_token(token *theToken, char *tokenString)
         {
             printf("invalid number");
             free(hexDigits);
+            theToken->type = BROKEN_TOKEN;
             return 1;
         }
     }
@@ -218,6 +222,7 @@ int read_token(token *theToken, char *tokenString)
     {
         if (!isalpha(tokenString[0]))
         {
+            theToken->type = BROKEN_TOKEN;
             printf("does not start with alphabetical char, not a valid ident");
             return 1;
         }
@@ -230,6 +235,7 @@ int read_token(token *theToken, char *tokenString)
             if (!isalnum(tokenString[i]))
             {
                 printf("ident has invalid character");
+                theToken->type = BROKEN_TOKEN;
                 return 1;
             }
         }

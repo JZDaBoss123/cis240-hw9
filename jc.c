@@ -42,6 +42,14 @@ int main(int argc, char **argv)
                 free(writename);
                 free(line);
             }
+            if (write_token(&theToken, writeFile) == 1)
+            {
+                printf("bad token write");
+                fclose(readFile);
+                fclose(writeFile);
+                free(writename);
+                free(line);
+            }
             // printf(tokenString);
             // printf("\n");
             tokenString = strtok(NULL, "\n\t\f\v\r ");
