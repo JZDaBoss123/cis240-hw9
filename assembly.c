@@ -8,16 +8,17 @@
 
 int write_token(token *theToken, FILE *writeFile, int *wasDefun, int *ifCounter, int *compareCounter, stack *theStack)
 {
-    char *prologue = "\tADD R6 R6 #-3\n\tSTR R7 R6 #1\n\tSTR R5 R6 #0\n\tADD R5 R6 #0\n";
-    //ldr from r6 because unsure of how many local variables
-    char *epilogue = "\tLDR R7 R6 #0\n\tSTR R7 R5 #2\n\tADD R6 R5 #0\n\tLDR R5 R6 #0\n\tLDR R7 R6 #1\n\tADD R6 R6 #3\n\tRET\n";
+    //from slides
+    char *prologue = "ADD R6 R6 #-3\nSTR R7 R6 #1\nSTR R5 R6 #0\nADD R5 R6 #0\n";
+    //ldr from r6 because unsure of how many local variables, r6 also points to RV
+    char *epilogue = "LDR R7 R6 #0\nSTR R7 R5 #2\nADD R6 R5 #0\nLDR R5 R6 #0\nLDR R7 R6 #1\nADD R6 R6 #3\nRET\n";
 
     //popping from stack
-    char *popTwo = "\tLDR R1 R6 #0\n\tADD R6 R6 #1\n\tLDR R2 R6 #0\n\tADD R6 R6 #1\n";
-    char *popOne = "\tLDR R1 R6 #0\n\tADD R6 R6 #1\n";
-    char *popThree = "\tLDR R1 R6 #0\n\tADD R6 R6 #1\n\tLDR R2 R6 #0\n\tADD R6 R6 #1\n\tLDR R3 R6 #0\n\tADD R6 R6 #1\n";
+    char *popTwo = "LDR R1 R6 #0\nADD R6 R6 #1\nLDR R2 R6 #0\nADD R6 R6 #1\n";
+    char *popOne = "LDR R1 R6 #0\nADD R6 R6 #1\n";
+    char *popThree = "LDR R1 R6 #0\nADD R6 R6 #1\nLDR R2 R6 #0\nADD R6 R6 #1\nLDR R3 R6 #0\nADD R6 R6 #1\n";
     //store r1
-    char *storeOne = "\tSTR R1 R6 #-1\n\tADD R6 R6 #-1\n";
+    char *storeOne = "STR R1 R6 #-1\nADD R6 R6 #-1\n";
     int literalValue;
     int stackNum;
     int stackDenom;
@@ -42,7 +43,7 @@ int write_token(token *theToken, FILE *writeFile, int *wasDefun, int *ifCounter,
         {
             fprintf(writeFile, "%s", "JSR ");
             fprintf(writeFile, "%s\n", theToken->str);
-            //otherwise function is not called for some reason
+            //otherwise function is not called for some reason, maybe because there needs to be a decremement for a argument to fn
             fprintf(writeFile, "%s", "ADD R6, R6, #-1\n");
         }
         break;
@@ -98,12 +99,12 @@ int write_token(token *theToken, FILE *writeFile, int *wasDefun, int *ifCounter,
         fprintf(writeFile, "lt_%d\n", *compareCounter);
         //else
         fprintf(writeFile, "%s", "CONST R0 #0\n");
-        fprintf(writeFile, "%s", "STR R0 R6 #-1\n\tADD R6 R6 #-1\n");
+        fprintf(writeFile, "%s", "STR R0 R6 #-1\nADD R6 R6 #-1\n");
         fprintf(writeFile, "JMP lt_end_%d\n", *compareCounter);
         //true branch (if)
         fprintf(writeFile, "lt_%d\n", *compareCounter);
         fprintf(writeFile, "%s", "CONST R0 #1\n");
-        fprintf(writeFile, "%s", "STR R0 R6 #-1\n\tADD R6 R6 #-1\n");
+        fprintf(writeFile, "%s", "STR R0 R6 #-1\nADD R6 R6 #-1\n");
         fprintf(writeFile, "lt_end_%d\n", *compareCounter);
         break;
     case LE:
@@ -115,12 +116,12 @@ int write_token(token *theToken, FILE *writeFile, int *wasDefun, int *ifCounter,
         fprintf(writeFile, "le_%d\n", *compareCounter);
         //else
         fprintf(writeFile, "%s", "CONST R0 #0\n");
-        fprintf(writeFile, "%s", "STR R0 R6 #-1\n\tADD R6 R6 #-1\n");
+        fprintf(writeFile, "%s", "STR R0 R6 #-1\nADD R6 R6 #-1\n");
         fprintf(writeFile, "JMP le_end_%d\n", *compareCounter);
         //true branch (if)
         fprintf(writeFile, "le_%d\n", *compareCounter);
         fprintf(writeFile, "%s", "CONST R0 #1\n");
-        fprintf(writeFile, "%s", "STR R0 R6 #-1\n\tADD R6 R6 #-1\n");
+        fprintf(writeFile, "%s", "STR R0 R6 #-1\nADD R6 R6 #-1\n");
         fprintf(writeFile, "le_end_%d\n", *compareCounter);
         break;
     case EQ:
@@ -132,12 +133,12 @@ int write_token(token *theToken, FILE *writeFile, int *wasDefun, int *ifCounter,
         fprintf(writeFile, "eq_%d\n", *compareCounter);
         //else
         fprintf(writeFile, "%s", "CONST R0 #0\n");
-        fprintf(writeFile, "%s", "STR R0 R6 #-1\n\tADD R6 R6 #-1\n");
+        fprintf(writeFile, "%s", "STR R0 R6 #-1\nADD R6 R6 #-1\n");
         fprintf(writeFile, "JMP eq_end_%d\n", *compareCounter);
         //true branch (if)
         fprintf(writeFile, "eq_%d\n", *compareCounter);
         fprintf(writeFile, "%s", "CONST R0 #1\n");
-        fprintf(writeFile, "%s", "STR R0 R6 #-1\n\tADD R6 R6 #-1\n");
+        fprintf(writeFile, "%s", "STR R0 R6 #-1\nADD R6 R6 #-1\n");
         fprintf(writeFile, "eq_end_%d\n", *compareCounter);
         break;
     case GE:
@@ -149,12 +150,12 @@ int write_token(token *theToken, FILE *writeFile, int *wasDefun, int *ifCounter,
         fprintf(writeFile, "ge_%d\n", *compareCounter);
         //else
         fprintf(writeFile, "%s", "CONST R0 #0\n");
-        fprintf(writeFile, "%s", "STR R0 R6 #-1\n\tADD R6 R6 #-1\n");
+        fprintf(writeFile, "%s", "STR R0 R6 #-1\nADD R6 R6 #-1\n");
         fprintf(writeFile, "JMP ge_end_%d\n", *compareCounter);
         //true branch (if)
         fprintf(writeFile, "ge_%d\n", *compareCounter);
         fprintf(writeFile, "%s", "CONST R0 #1\n");
-        fprintf(writeFile, "%s", "STR R0 R6 #-1\n\tADD R6 R6 #-1\n");
+        fprintf(writeFile, "%s", "STR R0 R6 #-1\nADD R6 R6 #-1\n");
         fprintf(writeFile, "ge_end_%d\n", *compareCounter);
         break;
     case GT:
@@ -166,12 +167,12 @@ int write_token(token *theToken, FILE *writeFile, int *wasDefun, int *ifCounter,
         fprintf(writeFile, "gt_%d\n", *compareCounter);
         //else
         fprintf(writeFile, "%s", "CONST R0 #0\n");
-        fprintf(writeFile, "%s", "STR R0 R6 #-1\n\tADD R6 R6 #-1\n");
+        fprintf(writeFile, "%s", "STR R0 R6 #-1\nADD R6 R6 #-1\n");
         fprintf(writeFile, "JMP gt_end_%d\n", *compareCounter);
         //true branch (if)
         fprintf(writeFile, "gt_%d\n", *compareCounter);
         fprintf(writeFile, "%s", "CONST R0 #1\n");
-        fprintf(writeFile, "%s", "STR R0 R6 #-1\n\tADD R6 R6 #-1\n");
+        fprintf(writeFile, "%s", "STR R0 R6 #-1\nADD R6 R6 #-1\n");
         fprintf(writeFile, "gt_end_%d\n", *compareCounter);
         break;
     case IF:
@@ -211,21 +212,21 @@ int write_token(token *theToken, FILE *writeFile, int *wasDefun, int *ifCounter,
         fprintf(writeFile, "%s", "ADD R6 R6 #1\n");
         break;
     case DUP:
-        fprintf(writeFile, "%s", "LDR R1 R6 #0\n\tSTR R1 R6 #-1\n\tADD R6 R6 #-1\n");
+        fprintf(writeFile, "%s", "LDR R1 R6 #0\nSTR R1 R6 #-1\nADD R6 R6 #-1\n");
         break;
     case SWAP:
         fprintf(writeFile, "%s", popTwo);
-        fprintf(writeFile, "%s", "STR R1 R6 #-1\n\tADD R6 R6 #-1\n\tSTR R2 R6 #-1\n\tADD R6 R6 #-1\n");
+        fprintf(writeFile, "%s", "STR R1 R6 #-1\nADD R6 R6 #-1\nSTR R2 R6 #-1\nADD R6 R6 #-1\n");
         break;
     case ROT:
         fprintf(writeFile, "%s", popThree);
-        fprintf(writeFile, "%s", "STR R2 R6 #-1\n\tADD R6 R6 #-1\n\tSTR R1 R6 #-1\n\tADD R6 R6 #-1\n\tSTR R3 R6 #-1\n\tADD R6 R6 #-1\n");
+        fprintf(writeFile, "%s", "STR R2 R6 #-1\nADD R6 R6 #-1\nSTR R1 R6 #-1\nADD R6 R6 #-1\nSTR R3 R6 #-1\nADD R6 R6 #-1\n");
         break;
     case ARG:
         argNum = theToken->arg_no; //maybe need to +2
         argNum = argNum + 2;
         fprintf(writeFile, "LDR R3 R5 #%d\n", argNum);
-        fprintf(writeFile, "STR R3 R6 #-1\n\tADD R6 R6 #-1\n");
+        fprintf(writeFile, "STR R3 R6 #-1\nADD R6 R6 #-1\n");
         break;
     case LITERAL:
         literalValue = theToken->literal_value;
@@ -236,12 +237,12 @@ int write_token(token *theToken, FILE *writeFile, int *wasDefun, int *ifCounter,
             int hiConstBits = (literalValue >> 8) & 0xFF;
             fprintf(writeFile, "CONST R3 #%d\n", constBits);
             fprintf(writeFile, "HICONST R3 #%d\n", hiConstBits);
-            fprintf(writeFile, "STR R3 R6 #-1\n\tADD R6 R6 #-1\n");
+            fprintf(writeFile, "STR R3 R6 #-1\nADD R6 R6 #-1\n");
         }
         else
         {
             fprintf(writeFile, "CONST R3 #%d\n", literalValue);
-            fprintf(writeFile, "STR R3 R6 #-1\n\tADD R6 R6 #-1\n");
+            fprintf(writeFile, "STR R3 R6 #-1\nADD R6 R6 #-1\n");
         }
         break;
     case BROKEN_TOKEN:

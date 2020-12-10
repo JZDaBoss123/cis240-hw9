@@ -48,16 +48,9 @@ int main(int argc, char **argv)
                 free(writename);
                 free(line);
             }
-            if (write_token(&theToken, writeFile, &wasDefun, &ifCounter, &compareCounter, &theStack) == 1)
-            {
-                printf("bad token write");
-                fclose(readFile);
-                fclose(writeFile);
-                free(writename);
-                free(line);
-            }
             // printf(tokenString);
             // printf("\n");
+            write_token(&theToken, writeFile, &wasDefun, &ifCounter, &compareCounter, &theStack);
             tokenString = strtok(NULL, "\n\t\f\v\r ");
         }
     }
