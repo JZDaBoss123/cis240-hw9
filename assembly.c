@@ -21,6 +21,7 @@ int write_token(token *theToken, FILE *writeFile, int *wasDefun, int *ifCounter,
     int literalValue;
     int stackNum;
     int stackDenom;
+    int argNum;
     switch (theToken->type)
     {
     case DEFUN:
@@ -41,7 +42,7 @@ int write_token(token *theToken, FILE *writeFile, int *wasDefun, int *ifCounter,
         {
             fprintf(writeFile, "%s", "JSR ");
             fprintf(writeFile, "%s\n", theToken->str);
-            //fprintf(writeFile, "%s". "ADD R6, R6, #-1");
+            fprintf(writeFile, "%s", "ADD R6, R6, #-1\n");
         }
         break;
     case RETURN:
@@ -220,6 +221,10 @@ int write_token(token *theToken, FILE *writeFile, int *wasDefun, int *ifCounter,
         fprintf(writeFile, "%s", "STR R2 R6 #-1\n\tADD R6 R6 #-1\n\tSTR R1 R6 #-1\n\tADD R6 R6 #-1\n\tSTR R3 R6 #-1\n\tADD R6 R6 #-1\n");
         break;
     case ARG:
+        argNum = theToken->arg_no; //maybe need to +2
+        argNum = argNum + 2;
+        fprintf(writeFile, "LDR R3 R5 #%d\n", argNum);
+        fprintf(writeFile, "STR R3 R6 #-1\n\tADD R6 R6 #-1\n");
         break;
     case LITERAL:
         literalValue = theToken->literal_value;

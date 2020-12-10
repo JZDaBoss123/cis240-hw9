@@ -5,6 +5,9 @@ fact
 	STR R7 R6 #1
 	STR R5 R6 #0
 	ADD R5 R6 #0
+LDR R3 R5 #3
+STR R3 R6 #-1
+	ADD R6 R6 #-1
 LDR R1 R6 #0
 	STR R1 R6 #-1
 	ADD R6 R6 #-1
@@ -16,19 +19,25 @@ STR R3 R6 #-1
 	LDR R2 R6 #0
 	ADD R6 R6 #1
 CMP R1 R2
-BRzp ge_0
+BRzp ge_1
 CONST R0 #0
 STR R0 R6 #-1
 	ADD R6 R6 #-1
-JMP ge_end_0
-ge_0
+JMP ge_end_1
+ge_1
 CONST R0 #1
 STR R0 R6 #-1
 	ADD R6 R6 #-1
-ge_end_0
+ge_end_1
+	LDR R1 R6 #0
+	ADD R6 R6 #1
+CMPI R1 #0
+BRz else_1
 CONST R3 #1
 STR R3 R6 #-1
 	ADD R6 R6 #-1
+JMP endif_1
+else_1
 LDR R1 R6 #0
 	STR R1 R6 #-1
 	ADD R6 R6 #-1
@@ -50,8 +59,8 @@ STR R1 R6 #-1
 SUB R1 R1 R2
 	STR R1 R6 #-1
 	ADD R6 R6 #-1
-JSR
-fact
+JSR fact
+ADD R6, R6, #-1
 	LDR R1 R6 #0
 	ADD R6 R6 #1
 	LDR R2 R6 #0
@@ -68,6 +77,7 @@ ADD R6 R6 #1
 MUL R1 R1 R2
 	STR R1 R6 #-1
 	ADD R6 R6 #-1
+endif_1
 	LDR R7 R6 #0
 	STR R7 R5 #2
 	ADD R6 R5 #0
@@ -85,39 +95,39 @@ main
 CONST R3 #4
 STR R3 R6 #-1
 	ADD R6 R6 #-1
-JSR
-fact
-JSR
-printnum
-JSR
-endl
+JSR fact
+ADD R6, R6, #-1
+JSR printnum
+ADD R6, R6, #-1
+JSR endl
+ADD R6, R6, #-1
 CONST R3 #5
 STR R3 R6 #-1
 	ADD R6 R6 #-1
-JSR
-fact
-JSR
-printnum
-JSR
-endl
+JSR fact
+ADD R6, R6, #-1
+JSR printnum
+ADD R6, R6, #-1
+JSR endl
+ADD R6, R6, #-1
 CONST R3 #6
 STR R3 R6 #-1
 	ADD R6 R6 #-1
-JSR
-fact
-JSR
-printnum
-JSR
-endl
+JSR fact
+ADD R6, R6, #-1
+JSR printnum
+ADD R6, R6, #-1
+JSR endl
+ADD R6, R6, #-1
 CONST R3 #7
 STR R3 R6 #-1
 	ADD R6 R6 #-1
-JSR
-fact
-JSR
-printnum
-JSR
-endl
+JSR fact
+ADD R6, R6, #-1
+JSR printnum
+ADD R6, R6, #-1
+JSR endl
+ADD R6, R6, #-1
 	LDR R7 R6 #0
 	STR R7 R5 #2
 	ADD R6 R5 #0
