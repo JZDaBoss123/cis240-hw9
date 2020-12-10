@@ -240,6 +240,7 @@ int read_token(token *theToken, char *tokenString)
             }
         }
         theToken->type = IDENT;
+        strcpy(theToken->str , tokenString);
         return 0;
     }
     return 1; //dummy return

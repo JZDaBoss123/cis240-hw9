@@ -25,6 +25,9 @@ int main(int argc, char **argv)
     char *line = malloc(250 * sizeof(char)); //just read one token if needed
     char *tokenString;
     token theToken;
+    int wasDefun = 0;
+    int ifCounter = 0;
+    int compareCounter = 0;
     while (fgets(line, 250, readFile) != NULL)
     {
         tokenString = strtok(line, "\n\t\f\v\r ");
@@ -42,7 +45,7 @@ int main(int argc, char **argv)
                 free(writename);
                 free(line);
             }
-            if (write_token(&theToken, writeFile) == 1)
+            if (write_token(&theToken, writeFile, &wasDefun, &ifCounter, &compareCounter) == 1)
             {
                 printf("bad token write");
                 fclose(readFile);
