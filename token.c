@@ -178,24 +178,6 @@ int read_token(token *theToken, char *tokenString)
         }
     }
 
-    //literal
-    //segfault here
-    else if (isdigit(tokenString[0]) || tokenString[0] == '-')
-    {
-        int decimalNumber;
-        if (sscanf(tokenString, "%d", &decimalNumber) == 1)
-        {
-            theToken->type = LITERAL;
-            theToken->literal_value = decimalNumber;
-            return 0;
-        }
-        else
-        {
-            printf("invalid number");
-            theToken->type = BROKEN_TOKEN;
-            return 1;
-        }
-    }
     //hex
     else if (tokenString[0] == '0' && tokenString[1] == 'x')
     {
@@ -217,6 +199,24 @@ int read_token(token *theToken, char *tokenString)
             return 1;
         }
     }
+    //literal
+    //segfault here
+    else if (isdigit(tokenString[0]) || tokenString[0] == '-')
+    {
+        int decimalNumber;
+        if (sscanf(tokenString, "%d", &decimalNumber) == 1)
+        {
+            theToken->type = LITERAL;
+            theToken->literal_value = decimalNumber;
+            return 0;
+        }
+        else
+        {
+            printf("invalid number");
+            theToken->type = BROKEN_TOKEN;
+            return 1;
+        }
+    }
     //ident or broken
     else
     {
@@ -228,7 +228,8 @@ int read_token(token *theToken, char *tokenString)
         }
         for (i = 1; i < strlen(tokenString); i++)
         {
-            if (tokenString[i] == '_') {
+            if (tokenString[i] == '_')
+            {
                 continue;
             }
 
@@ -240,7 +241,7 @@ int read_token(token *theToken, char *tokenString)
             }
         }
         theToken->type = IDENT;
-        strcpy(theToken->str , tokenString);
+        strcpy(theToken->str, tokenString);
         return 0;
     }
     return 1; //dummy return
