@@ -42,6 +42,7 @@ int write_token(token *theToken, FILE *writeFile, int *wasDefun, int *ifCounter,
         {
             fprintf(writeFile, "%s", "JSR ");
             fprintf(writeFile, "%s\n", theToken->str);
+            //otherwise function is not called for some reason
             fprintf(writeFile, "%s", "ADD R6, R6, #-1\n");
         }
         break;
